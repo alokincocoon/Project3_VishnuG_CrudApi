@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: '3'
+services:
+  app:
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - app-data:/go/src/app/data
+
+  edgedb:
+    image: edgedb/edgedb:latest
+    env_file:
+      - .env
+    ports:
+      - "5656:5656"
+    volumes:
+      - ../edgedb-data:/var/lib/edgedb/data
+      - "./dbschema:/dbschema"
+
+volumes:
+  app-data:
+  edgedb-data:
